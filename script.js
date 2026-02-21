@@ -1,372 +1,194 @@
 // =====================================================
-// NAVBAR SCROLL EFFECT
+// CONFIGURACIÓN SUPABASE
 // =====================================================
-const navbar = document.getElementById('navbar');
+const SUPABASE_URL = "https://aycyitowvqgdwxvmgkdl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_IpXeUSuAyI1roqEXPqqaVQ_CzNUH1yC";
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+const catalogoContainer = document.getElementById('catalogo');
+const cartCountElement = document.getElementById('cart-count');
 
 // =====================================================
-// MOBILE MENU TOGGLE
+// LÓGICA DEL CATÁLOGO
 // =====================================================
-const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-const navLinks = document.getElementById('navLinks');
 
-mobileMenuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    mobileMenuToggle.classList.toggle('active');
-});
+/**
+ * Obtiene los productos desde Supabase
+ */
+async function obtenerProductos() {
+    try {
+        const { data: productos, error } = await _supabase
+            .from('productos')
+            .select('*');
 
-// =====================================================
-// SMOOTH SCROLL FOR NAVIGATION LINKS
-// =====================================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            // Close mobile menu if open
-            navLinks.classList.remove('active');
-            mobileMenuToggle.classList.remove('active');
+        if (error) throw error;
+
+        console.log("Productos cargados:", productos);
+        renderizarProductos(productos);
+        if (cartCountElement) {
+            cartCountElement.textContent = `${productos.length} productos`;
         }
-    });
-});
-
-// =====================================================
-// PARTICLES ANIMATION
-// =====================================================
-const particlesContainer = document.getElementById('particles');
-const particleCount = 30;
-
-for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-
-    // Random position
-    particle.style.left = Math.random() * 100 + '%';
-    particle.style.top = Math.random() * 100 + '%';
-
-    // Random size
-    const size = Math.random() * 4 + 2;
-    particle.style.width = size + 'px';
-    particle.style.height = size + 'px';
-
-    // Random animation duration
-    const duration = Math.random() * 20 + 15;
-    particle.style.animationDuration = duration + 's';
-
-    // Random animation delay
-    const delay = Math.random() * 5;
-    particle.style.animationDelay = delay + 's';
-
-    particlesContainer.appendChild(particle);
+    } catch (error) {
+        console.error("Error cargando productos:", error);
+        if (catalogoContainer) {
+            catalogoContainer.innerHTML = `
+                <div class="col-span-full text-center py-20 bg-red-500/10 border border-red-500/20 rounded-2xl">
+                    <p class="text-red-400 font-bold">Error al cargar el catálogo.</p>
+                    <button onclick="obtenerProductos()" class="mt-4 text-sm underline text-red-300">Reintentar</button>
+                </div>
+            `;
+        }
+    }
 }
 
-// Add particle styles dynamically
-const style = document.createElement('style');
-style.textContent = `
+/**
+ * Renderiza las tarjetas de productos con efecto Flip 3D
+ */
+function renderizarProductos(productos) {
+    if (!catalogoContainer) return;
+    catalogoContainer.innerHTML = '';
+
+    if (!productos || productos.length === 0) {
+        catalogoContainer.innerHTML = `
+            <div class="col-span-full text-center py-20">
+                <p class="text-gray-500">No hay productos disponibles por ahora.</p>
+            </div>
+        `;
+        return;
+    }
+
+    productos.forEach((prod, index) => {
+        const nombre = prod.nombre || "Producto Premium";
+        const precio = prod.precio || "0.00";
+        const imagen = prod.imagen_url || prod.foto || "https://via.placeholder.com/600x600?text=No+Imagen";
+        const descripcionCompleta = prod.descripcion || prod.resumen || "Selección exclusiva con protección UV de alta fidelidad.";
+        const descripcionCorta = descripcionCompleta.length > 60 ? descripcionCompleta.substring(0, 60) + "..." : descripcionCompleta;
+        const id = prod.id || index;
+
+        const cardContainer = document.createElement('div');
+        cardContainer.className = "product-card-flip group";
+        cardContainer.innerHTML = `
+            <div class="product-card-inner" onclick="toggleFlip(this)">
+                <!-- FRONT SIDE (Image & Short Desc) -->
+                <div class="product-card-front glass-card flex flex-col">
+                    <div class="product-image-container relative">
+                        <img src="${imagen}" alt="${nombre}" 
+                             class="product-image"
+                             onerror="this.src='https://via.placeholder.com/600x600?text=Error+al+cargar+imagen'">
+                        <div class="absolute top-4 left-4 bg-primary/20 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full">
+                            TOCAR PARA DETALLES
+                        </div>
+                    </div>
+                    <div class="product-info-front flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="product-title">${nombre}</h3>
+                            <span class="text-xs font-bold text-primary">$${precio}</span>
+                        </div>
+                        <p class="product-desc-short">${descripcionCorta}</p>
+                        <button onclick="event.stopPropagation(); comprarPorWhatsApp('${id}', '${nombre}')" 
+                                class="w-full mt-auto bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-green-500/20">
+                            Venta por WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BACK SIDE (Full Description) -->
+                <div class="product-card-back glass-card">
+                    <h3 class="text-xl font-bold text-primary mb-4">${nombre}</h3>
+                    <div class="w-12 h-1 bg-primary/30 mb-6 mx-auto rounded-full"></div>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-8 scrollbar-hide overflow-y-auto max-h-[200px] px-2">
+                        ${descripcionCompleta}
+                    </p>
+                    <div class="border-t border-white/10 pt-6 w-full mt-auto">
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-4">Click en cualquier lado para volver</p>
+                        <button onclick="event.stopPropagation(); comprarPorWhatsApp('${id}', '${nombre}')" 
+                                class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                            Venta por WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        catalogoContainer.appendChild(cardContainer);
+    });
+}
+
+/**
+ * Función para alternar el giro de la tarjeta
+ */
+function toggleFlip(element) {
+    const card = element.closest('.product-card-flip');
+    card.classList.toggle('flipped');
+}
+
+/**
+ * Genera el link de WhatsApp con toda la información necesaria
+ */
+function comprarPorWhatsApp(id, nombre) {
+    const nroWhatsApp = "584241748963";
+    const mensaje = encodeURIComponent(`¡Hola Tu Visión Digital! 👋\n\nMe gustaría realizar una compra o consulta sobre este producto:\n🛍️ *Producto:* ${nombre}\n🆔 *ID:* ${id}\n\nQuedo atento a sus indicaciones.`);
+    window.open(`https://wa.me/${nroWhatsApp}?text=${mensaje}`, '_blank');
+}
+
+// =====================================================
+// ANIMACIONES PREMIUM
+// =====================================================
+
+function initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+
+    const particleCount = 40;
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        const size = Math.random() * 4 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        const duration = Math.random() * 20 + 20;
+        particle.style.animationDuration = duration + 's';
+        const delay = Math.random() * 10;
+        particle.style.animationDelay = delay + 's';
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// Estilos de animaciones clave inyectados dinámicamente
+const customStyles = document.createElement('style');
+customStyles.textContent = `
+    @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
     .particle {
         position: absolute;
-        background: rgba(59, 130, 246, 0.6);
+        background: rgba(91, 164, 207, 0.4);
         border-radius: 50%;
         pointer-events: none;
         animation: float-particle 20s infinite ease-in-out;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
     }
-    
     @keyframes float-particle {
-        0%, 100% {
-            transform: translate(0, 0);
-            opacity: 0.4;
-        }
-        25% {
-            transform: translate(100px, -100px);
-            opacity: 0.8;
-        }
-        50% {
-            transform: translate(-50px, -200px);
-            opacity: 0.6;
-        }
-        75% {
-            transform: translate(-100px, -100px);
-            opacity: 0.8;
-        }
+        0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+        50% { transform: translate(50px, -100px); opacity: 0.6; }
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(customStyles);
 
 // =====================================================
-// SCROLL REVEAL ANIMATIONS
+// INICIALIZACIÓN
 // =====================================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-
-            // Stagger animation for grid items
-            if (entry.target.classList.contains('products-grid') ||
-                entry.target.classList.contains('testimonials-grid') ||
-                entry.target.classList.contains('showcase-grid')) {
-                const items = entry.target.children;
-                Array.from(items).forEach((item, index) => {
-                    setTimeout(() => {
-                        item.style.animation = 'fade-in-up 0.6s forwards';
-                        item.style.opacity = '0';
-                        setTimeout(() => {
-                            item.style.opacity = '1';
-                        }, 50);
-                    }, index * 100);
-                });
-            }
-        }
-    });
-}, observerOptions);
-
-// Observe all sections
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
+document.addEventListener('DOMContentLoaded', () => {
+    initParticles();
+    obtenerProductos();
 });
 
-// Observe grids
-document.querySelectorAll('.products-grid, .testimonials-grid, .showcase-grid').forEach(grid => {
-    observer.observe(grid);
-});
-
-// =====================================================
-// PARALLAX EFFECT FOR HERO VISUAL
-// =====================================================
-const heroVisual = document.querySelector('.hero-visual');
-
-if (heroVisual) {
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * 0.3;
-        heroVisual.style.transform = `translateY(${rate}px)`;
-    });
-}
-
-// =====================================================
-// ANIMATED COUNTER FOR STATS
-// =====================================================
-const animateCounter = (element, target, duration = 2000) => {
-    const start = 0;
-    const increment = target / (duration / 16);
-    let current = start;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target + (element.dataset.suffix || '');
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current) + (element.dataset.suffix || '');
-        }
-    }, 16);
-};
-
-// Observe stats and trigger counter
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-            const statNumbers = entry.target.querySelectorAll('.stat-number');
-            statNumbers.forEach(stat => {
-                const text = stat.textContent;
-                const number = parseInt(text.replace(/\D/g, ''));
-                const suffix = text.replace(/[0-9]/g, '');
-                stat.dataset.suffix = suffix;
-                animateCounter(stat, number);
-            });
-            entry.target.classList.add('counted');
-        }
-    });
-}, { threshold: 0.5 });
-
-const heroStats = document.querySelector('.hero-stats');
-if (heroStats) {
-    statsObserver.observe(heroStats);
-}
-
-// =====================================================
-// BUTTON RIPPLE EFFECT
-// =====================================================
-document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
-    button.addEventListener('click', function (e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.classList.add('ripple');
-
-        this.appendChild(ripple);
-
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    });
-});
-
-// Add ripple styles
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-    .btn-primary, .btn-secondary {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .ripple {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        transform: scale(0);
-        animation: ripple-animation 0.6s ease-out;
-        pointer-events: none;
-    }
-    
-    @keyframes ripple-animation {
-        to {
-            transform: scale(4);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(rippleStyle);
-
-// =====================================================
-// CURSOR GLOW EFFECT (OPTIONAL - DESKTOP ONLY)
-// =====================================================
-if (window.innerWidth > 768) {
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor-glow';
-    document.body.appendChild(cursor);
-
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    });
-
-    const cursorStyle = document.createElement('style');
-    cursorStyle.textContent = `
-        .cursor-glow {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
-            z-index: 9999;
-            mix-blend-mode: screen;
-        }
-        
-        .btn-primary:hover ~ .cursor-glow,
-        .btn-secondary:hover ~ .cursor-glow,
-        a:hover ~ .cursor-glow {
-            width: 40px;
-            height: 40px;
-        }
-    `;
-    document.head.appendChild(cursorStyle);
-}
-
-// =====================================================
-// CONSOLE MESSAGE
-// =====================================================
-console.log('%c🚀 Tu Visión Digital', 'font-size: 24px; font-weight: bold; color: #3B82F6;');
-console.log('%cTu Estilo, Tu Enfoque, Tu Visión', 'font-size: 14px; color: #60A5FA;');
-console.log('%c✨ Landing page creada con tecnología premium', 'font-size: 12px; color: #93C5FD;');
-
-// =====================================================
-// SUPABASE INTEGRATION & LEAD CAPTURE
-// =====================================================
-
-// Initialize Supabase
-const supabaseUrl = 'https://aycyitowvqgdwxvmgkdl.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Y3lpdG93dnFnZHd4dm1na2RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NzI3MDksImV4cCI6MjA4NjI0ODcwOX0.sNZjD6CjNhJGHCZ51dvrAYnfXc6_s0_emOaWyagx1cE';
-const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-// Modal Elements
-const leadModal = document.getElementById('leadModal');
-const closeModal = document.querySelector('.close-modal');
-const navCta = document.querySelector('.nav-cta');
-const heroCtaBtn = document.querySelector('.hero-cta .btn-primary'); // "Explorar Colección" or similar if we want to hook it
-
-// Open Modal Function
-const openModal = () => {
-    leadModal.style.display = 'block';
-};
-
-// Close Modal Function
-const closeModalFunc = () => {
-    leadModal.style.display = 'none';
-};
-
-// Event Listeners for Modal
-if (navCta) navCta.addEventListener('click', openModal);
-if (heroCtaBtn) heroCtaBtn.addEventListener('click', openModal); // Optional: also open on hero button
-
-if (closeModal) closeModal.addEventListener('click', closeModalFunc);
-
-window.addEventListener('click', (event) => {
-    if (event.target == leadModal) {
-        closeModalFunc();
-    }
-});
-
-// Form Submission
-const leadForm = document.getElementById('leadForm');
-
-if (leadForm) {
-    leadForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const submitBtn = leadForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Enviando...';
-        submitBtn.disabled = true;
-
-        const formData = {
-            name: document.getElementById('name').value,
-            phone: document.getElementById('phone').value,
-            interest: document.getElementById('interest').value,
-            created_at: new Date().toISOString()
-        };
-
-        try {
-            const { data, error } = await _supabase
-                .from('leads')
-                .insert([formData]);
-
-            if (error) throw error;
-
-            alert('¡Gracias! Tus datos han sido enviados. Te contactaremos pronto con tu cupón.');
-            leadForm.reset();
-            closeModalFunc();
-        } catch (error) {
-            console.error('Error inserting lead:', error);
-            alert('Hubo un error al enviar tus datos. Por favor intenta de nuevo.');
-        } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    });
-}
+console.log('%c🚀 Tu Visión Digital | Modo Flip-Catalog Activado', 'font-size: 18px; font-weight: bold; color: #5BA4CF;');

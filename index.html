@@ -5,9 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Tu Visión Digital - Lentes deportivos premium para pesca, playa y senderismo. Tu Estilo, Tu Enfoque, Tu Visión.">
-    <meta name="keywords" content="lentes deportivos, gafas de sol, pesca, playa, senderismo, deportes">
-    <title>Tu Visión Digital | Lentes Deportivos Premium</title>
+        content="Tu Visión Digital - Lentes deportivos premium. Catálogo exclusivo con selección de estilo y protección.">
+    <meta name="keywords" content="lentes deportivos, gafas de sol, catálogo, Tu Visión Digital">
+    <title>Tu Visión Digital | Catálogo Premium</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5BA4CF',
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,468 +35,106 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/logo.png">
+
+    .gradient-text-alt {
+    background: linear-gradient(135deg, #5BA4CF 0%, #3E8CB9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    }
+    </style>
 </head>
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="nav-logo">
-                    <img src="images/logo.png" alt="Tu Visión Digital Logo" class="logo-img">
-                    <span class="logo-text">Tu Visión Digital</span>
-                </div>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#inicio" class="nav-link">Inicio</a></li>
-                    <li><a href="#productos" class="nav-link">Productos</a></li>
-                    <li><a href="#coleccion" class="nav-link">Colección</a></li>
-                    <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
-                    <li><a href="#contacto" class="nav-link">Contacto</a></li>
-                </ul>
-                <button class="btn-primary nav-cta">Comprar Ahora</button>
-                <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+<body class="bg-black text-white font-sans selection:bg-primary/30">
+
+    <!-- Animated Background Assets -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="images/logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                <h1 class="text-xl font-bold tracking-tight font-heading uppercase">Tu Visión Digital</h1>
+            </div>
+            <div id="cart-count"
+                class="bg-primary/20 border border-primary/30 px-4 py-1.5 rounded-full text-sm font-semibold text-primary">
+                0 productos
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="hero-background">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="particles" id="particles"></div>
-        </div>
-
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <div class="hero-label">
-                        <span class="label-icon">👓</span>
-                        <span>Visión Premium para Deportistas</span>
-                    </div>
-                    <h1 class="hero-title">
-                        Tu Estilo,<br>
-                        <span class="gradient-text">Tu Enfoque,</span><br>
-                        Tu Visión
-                    </h1>
-                    <p class="hero-subtitle">
-                        Descubre la colección más innovadora de lentes deportivos diseñados para pesca, playa y
-                        senderismo. Tecnología de punta con estilo inigualable.
-                    </p>
-                    <div class="hero-cta">
-                        <button class="btn-primary btn-large pulse-glow">
-                            Explorar Colección
-                        </button>
-                        <button class="btn-secondary btn-large">
-                            Ver Catálogo
-                        </button>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <span class="stat-number">500+</span>
-                            <span class="stat-label">Clientes Felices</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label">UV Protection</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">24/7</span>
-                            <span class="stat-label">Soporte</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <!-- PLACEHOLDER: Reemplaza con tu imagen hero_visual.png -->
-                    <div class="hero-image-container floating">
-                        <img src="images/hero_visual.jpg" alt="Lentes Deportivos Premium"
-                            class="hero-image glow-primary">
-                    </div>
-                </div>
-            </div>
+    <!-- Hero / Intro -->
+    <section class="relative z-10 pt-20 pb-12 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span
+                class="inline-block text-primary text-xs font-bold uppercase tracking-widest mb-4 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                Catálogo Exclusivo 2026
+            </span>
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight">
+                Lentes con <span class="gradient-text-alt">Estilo y Protección</span>
+            </h2>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                Selecciona tus lentes premium y recíbelos directamente en Caracas. Coordinamos todo el proceso de
+                entrega de forma personalizada.
+            </p>
         </div>
     </section>
 
-    <!-- Social Proof -->
-    <section class="social-proof">
-        <div class="container">
-            <p class="social-proof-text">Confiado por deportistas profesionales y entusiastas</p>
-            <div class="brands-marquee">
-                <div class="brand-item">⭐⭐⭐⭐⭐</div>
-                <div class="brand-item">Calidad Premium</div>
-                <div class="brand-item">🏆 Award Winner</div>
-                <div class="brand-item">Envío Gratis</div>
-                <div class="brand-item">Garantía 2 Años</div>
+    <!-- Main Catalog Grid -->
+    <main class="relative z-10 max-w-7xl mx-auto p-6 min-h-[400px]">
+        <div id="catalogo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="col-span-full flex flex-col items-center justify-center py-20">
+                <div class="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+                <p class="text-gray-500 font-medium">Cargando catálogo premium...</p>
             </div>
         </div>
-    </section>
-
-    <!-- Productos/Servicios Section -->
-    <section class="products" id="productos">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Nuestra Colección</span>
-                <h2 class="section-title">Lentes para Cada Aventura</h2>
-                <p class="section-subtitle">Diseñados específicamente para tu deporte favorito con tecnología de
-                    vanguardia</p>
-            </div>
-
-            <div class="products-grid">
-                <!-- Product Card 1: Pesca -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_fishing.jpg -->
-                            <img src="images/service_fishing.jpg" alt="Lentes para Pesca" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Lentes para Pesca</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Lentes para Pesca</h3>
-                            <p class="product-description">Lentes polarizados especialmente diseñados para eliminar el
-                                reflejo del agua y mejorar tu visión bajo el sol.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Polarizados</span>
-                                <span class="feature-tag">Anti-Reflejo</span>
-                                <span class="feature-tag">UV400</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 2: Playa -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_beach.jpg -->
-                            <img src="images/service_beach.jpg" alt="Lentes para Playa" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Lentes para Playa</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Lentes para Playa</h3>
-                            <p class="product-description">Protección total contra rayos UV y resistencia al agua
-                                salada. Perfectos para días soleados en la costa.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Resistente al Agua</span>
-                                <span class="feature-tag">Ligeros</span>
-                                <span class="feature-tag">Estilo Premium</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 3: Senderismo -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_hiking.jpg -->
-                            <img src="images/service_hiking.jpg" alt="Lentes para Senderismo" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Lentes para Senderismo</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Lentes para Senderismo</h3>
-                            <p class="product-description">Diseño ergonómico y resistente para largas caminatas.
-                                Protección contra viento, polvo y rayos solares.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Ergonómicos</span>
-                                <span class="feature-tag">Anti-Viento</span>
-                                <span class="feature-tag">Durables</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 4: Tecnología -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_technology.jpg -->
-                            <img src="images/service_technology.jpg" alt="Tecnología Avanzada" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Tecnología Avanzada</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Tecnología Avanzada</h3>
-                            <p class="product-description">Lentes con recubrimiento anti-rayones, tratamiento
-                                hidrofóbico y tecnología de filtrado de luz azul.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Anti-Rayones</span>
-                                <span class="feature-tag">Hidrofóbico</span>
-                                <span class="feature-tag">Blue Light Filter</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 5: Lifestyle -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_lifestyle.jpg -->
-                            <img src="images/service_lifestyle.jpg" alt="Estilo de Vida" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Estilo de Vida</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Estilo de Vida</h3>
-                            <p class="product-description">Combina funcionalidad deportiva con diseño urbano moderno.
-                                Para el día a día con estilo.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Versátil</span>
-                                <span class="feature-tag">Moderno</span>
-                                <span class="feature-tag">Confortable</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 6: Colección -->
-                <div class="product-card-flip">
-                    <div class="product-card-inner">
-                        <div class="product-card-front">
-                            <!-- PLACEHOLDER: Reemplaza con service_collection.jpg -->
-                            <img src="images/service_collection.jpg" alt="Colección Completa" class="product-image">
-                            <div class="product-overlay">
-                                <h3 class="product-title-front">Colección Completa</h3>
-                            </div>
-                        </div>
-                        <div class="product-card-back glass-card">
-                            <h3 class="product-title-back">Colección Completa</h3>
-                            <p class="product-description">Explora nuestra gama completa de modelos y encuentra el par
-                                perfecto para cada ocasión.</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Variedad</span>
-                                <span class="feature-tag">Calidad</span>
-                                <span class="feature-tag">Garantía</span>
-                            </div>
-                            <button class="btn-primary btn-small">Ver Detalles</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Showcase Section -->
-    <section class="showcase" id="coleccion">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Calidad Premium</span>
-                <h2 class="section-title">Diseñados para Durar</h2>
-                <p class="section-subtitle">Cada detalle cuenta. Materiales de primera calidad y artesanía excepcional.
-                </p>
-            </div>
-
-            <div class="showcase-grid">
-                <div class="showcase-item glass-card">
-                    <!-- PLACEHOLDER: Reemplaza con showcase_detail.jpg -->
-                    <img src="images/showcase_detail.jpg" alt="Detalle de Calidad" class="showcase-image">
-                    <div class="showcase-content">
-                        <h3>Artesanía Premium</h3>
-                        <p>Cada par es cuidadosamente fabricado con los mejores materiales del mercado.</p>
-                    </div>
-                </div>
-                <div class="showcase-item glass-card">
-                    <!-- PLACEHOLDER: Reemplaza con showcase_testimonial.jpg -->
-                    <img src="images/showcase_testimonial.jpg" alt="Cliente Satisfecho" class="showcase-image">
-                    <div class="showcase-content">
-                        <h3>Satisfacción Garantizada</h3>
-                        <p>Miles de clientes satisfechos confían en nuestra calidad y servicio.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonios Section -->
-    <section class="testimonials" id="testimonios">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Testimonios</span>
-                <h2 class="section-title">Lo Que Dicen Nuestros Clientes</h2>
-            </div>
-
-            <div class="testimonials-grid">
-                <div class="testimonial-card glass-card">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">Los mejores lentes para pesca que he usado. La claridad bajo el agua es
-                        increíble y el diseño es súper cómodo.</p>
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JM</div>
-                        <div class="author-info">
-                            <p class="author-name">Juan Martínez</p>
-                            <p class="author-role">Pescador Profesional</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card glass-card">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">Perfectos para mis aventuras en la montaña. Ligeros, resistentes y con
-                        un estilo increíble. ¡Totalmente recomendados!</p>
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AR</div>
-                        <div class="author-info">
-                            <p class="author-name">Ana Rodríguez</p>
-                            <p class="author-role">Senderista</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card glass-card">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">Calidad excepcional y servicio al cliente de primera. Mis lentes
-                        favoritos para días de playa y surf.</p>
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">CL</div>
-                        <div class="author-info">
-                            <p class="author-name">Carlos López</p>
-                            <p class="author-role">Surfista</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Final Section -->
-    <section class="cta-final">
-        <div class="cta-background">
-            <div class="gradient-orb orb-3"></div>
-        </div>
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title glow-text">¿Listo para Mejorar Tu Visión?</h2>
-                <p class="cta-subtitle">Únete a cientos de deportistas que ya confían en Tu Visión Digital</p>
-                <button class="btn-primary btn-large pulse-glow">Comprar Ahora</button>
-                <p class="cta-note">🎁 Envío gratis en pedidos superiores a $50</p>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer" id="contacto">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="footer-logo">
-                        <img src="images/logo.png" alt="Tu Visión Digital" class="footer-logo-img">
-                        <span class="footer-logo-text">Tu Visión Digital</span>
-                    </div>
-                    <p class="footer-tagline">Tu Estilo, Tu Enfoque, Tu Visión</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">📘</a>
-                        <a href="#" class="social-link">📷</a>
-                        <a href="#" class="social-link">🐦</a>
-                        <a href="#" class="social-link">📺</a>
-                    </div>
-                </div>
-
-                <div class="footer-column">
-                    <h4 class="footer-title">Productos</h4>
-                    <ul class="footer-links">
-                        <li><a href="#productos">Lentes para Pesca</a></li>
-                        <li><a href="#productos">Lentes para Playa</a></li>
-                        <li><a href="#productos">Lentes para Senderismo</a></li>
-                        <li><a href="#productos">Colección Completa</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4 class="footer-title">Recursos</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Guía de Tallas</a></li>
-                        <li><a href="#">Cuidado de Lentes</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4 class="footer-title">Empresa</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Sobre Nosotros</a></li>
-                        <li><a href="#">Contacto</a></li>
-                        <li><a href="#">Términos y Condiciones</a></li>
-                        <li><a href="#">Política de Privacidad</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4 class="footer-title">Contacto</h4>
-                    <ul class="footer-links">
-                        <li>📧 info@tuvisiondigital.com</li>
-                        <li>📱 +1 (555) 123-4567</li>
-                        <li>📍 Ciudad, País</li>
-                        <li>🕒 Lun - Vie: 9AM - 6PM</li>
-                    </ul>
-                </div>
+    <footer class="relative z-10 p-12 mt-20 border-t border-white/5 bg-zinc-950/50 backdrop-blur-sm text-center">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-center gap-6 mb-8 text-2xl">
+                <a href="https://www.instagram.com/tu_vision_digital" target="_blank"
+                    class="hover:text-primary transition-colors">📷</a>
+                <a href="https://www.facebook.com/957732350762247" target="_blank"
+                    class="hover:text-primary transition-colors">📘</a>
             </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 Tu Visión Digital. Todos los derechos reservados.</p>
-            </div>
+            <p class="text-gray-500 text-sm font-medium">
+                &copy; 2026 Tu Visión Digital - Caracas, Venezuela. <br>
+                <a href="https://wa.me/584241748963" target="_blank"
+                    class="inline-flex items-center gap-2 mt-4 bg-[#25D366] text-white px-6 py-2 rounded-full font-bold hover:bg-[#128C7E] transition-all">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    Contactar por WhatsApp
+                </a>
+                <span class="text-gray-600 mt-4 block">Tu Estilo, Tu Enfoque, Tu Visión.</span>
+            </p>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/YOUR_NUMBER" class="whatsapp-float" target="_blank" id="whatsappFloat">
-        <i class="fab fa-whatsapp"></i> 💬
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/584241748963" target="_blank"
+        class="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-95 group"
+        aria-label="Contactar por WhatsApp">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+        <span
+            class="absolute right-full mr-4 bg-white text-black px-3 py-1 rounded-lg text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            ¿Necesitas ayuda?
+        </span>
     </a>
-
-    <!-- Lead Capture Modal -->
-    <div id="leadModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>¡Obtén tu Descuento Exclusivo!</h2>
-                <p>Déjanos tus datos y recibe un cupón especial para tu primera compra.</p>
-            </div>
-            <form id="leadForm">
-                <div class="form-group">
-                    <label for="name">Nombre Completo</label>
-                    <input type="text" id="name" name="name" required placeholder="Tu nombre">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Teléfono (WhatsApp)</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8900">
-                </div>
-                <div class="form-group">
-                    <label for="interest">Producto de Interés</label>
-                    <select id="interest" name="interest">
-                        <option value="General">Colección General</option>
-                        <option value="Pesca">Lentes de Pesca</option>
-                        <option value="Playa">Lentes de Playa</option>
-                        <option value="Senderismo">Lentes de Senderismo</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary btn-submit">Enviar y Recibir Cupón</button>
-            </form>
-        </div>
-    </div>
 
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
 
